@@ -1,0 +1,18 @@
+<div class="top_filter">
+    <form method="GET" action="">
+        <div class="form-row">
+            <div class="form-group col-sm-3">{{ form.timeframe }}</div>
+            <div class="form-group col-sm-2">
+                <input class="btn blue col-sm" type="submit" value="Scan">
+            </div>
+            {% if candidates %}
+            <div class="form-group col-sm-2">
+                <a class="btn grey col-sm" href="/remove-candidates/">
+                    Clean
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </form>
+</div>
+

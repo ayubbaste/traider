@@ -1,0 +1,121 @@
+{% extends 'traider/base.html' %}
+{% load static l10n %}
+
+{% block title%}Traid id: {{ traid.id }}{% endblock title %}
+
+{% block addition-styles %}
+    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+{% endblock addition-styles %}
+
+{% block breadcrumbs %}
+    <a href="/">Главная</a>
+    / Traid id: {{ traid.id }}
+{% endblock breadcrumbs%}
+
+{% block content %}
+    <h1>Traid id: {{ traid.id }}</h1>
+
+    <table class="table table-sm white-bg border-black shadow-small">
+        <tbody>
+            <tr>
+                <td class="dark-grey">Date</td>
+                <td class="dark-grey">{{ traid.time }} / {{ traid.date|date:"d.m.Y" }}</td>
+            </tr>
+            <tr>
+                <td class="dark-grey">Coin</td>
+                <td>{{ traid.coin.name }}</td>
+            </tr>
+            <tr>
+                <td class="dark-grey">Result %</td>
+                <td>
+                    <span class="{% if traid.result_percent > 0 %}green{% else %}black{% endif %}">
+                        % {{ traid.result_percent }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="dark-grey">Result $</td>
+                <td>
+                    <span class="{% if traid.result > 0 %}green{% else %}black{% endif %}">
+                        $ {{ traid.result }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="dark-grey">Stop-Loss</td>
+                <td class="dark-grey">% {{ traid.stoploss_percent }}</td>
+            </tr>
+            <tr>
+                <td class="dark-grey">Buy value</td>
+                <td class="dark-grey">$ {{ traid.buy_val }}</td>
+            </tr>
+            <tr>
+                <td class="dark-grey">Sell value</td>
+                <td class="dark-grey">$ {{ traid.sell_val }}</td>
+            </tr>
+
+            {% if traid.entry_reasons.all %}
+            <tr>
+                <td class="dark-grey">EntryReasons</td>
+                <td>
+                    {% for reason in traid.entry_reasons.all %}
+                        <p class="dark-grey">· {{ reason }}</p>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endif %}
+
+            {% if traid.note %}
+            <tr>
+                <td colspan=2>
+                    <h6 class="dark-grey">Заметка</h6>
+                    {{ traid.note|safe }}
+                </td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <br>
+    <p class="dark-grey">
+        <a class="dark-grey" href="edit/">Edit</a>
+        | <a class="dark-grey" href="del/">Delete</a>
+    </p>
+
+
+    {% if traid.screenshots.all %}
+    <div class="swiper-container image_block border-black">
+				<div class="swiper-button-prev"></div>
+				<div class="swiper-button-next"></div>
+
+				<div class="swiper-wrapper">
+        {% for screenshot in traid.screenshots.all %}
+						<div class="swiper-slide" data-history="1">
+                <img class="image" src="{{ screenshot.attached_file.url }}">
+            </div>
+        {% endfor %}
+        </div>
+
+				<div class="swiper-pagination"></div>
+    </div>
+    {% endif %}
+
+{% endblock content %}
+
+{% block scripts %}
+	<script type="text/javascript" src="{% static 'js/swiper.min.js' %}"></script>
+
+	<script>
+		var swiper = new Swiper('.swiper-container', {
+			spaceBetween: 50,
+			slidesPerView: 1,
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
+			pagination: {
+				el: '.swiper-pagination',
+			},
+		});
+	</script>
+{% endblock scripts %}

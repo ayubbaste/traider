@@ -1,0 +1,100 @@
+<table class="table table-sm white-bg border-black shadow-small">
+    <tbody>
+        <tr class="light-grey-bg mini-font">
+            <td>Main statistic</td>
+            <td class="dark-grey">
+                {{ traids_count }} traids | {{ global_result }} $
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">
+                Traids count:
+            </td>
+            <td class="dark-grey">
+                {{ traids_count_today }}
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">
+                Result $:
+            </td>
+            <td>
+                <span class="{% if result_today > 0 %}green{% elif result_today == 0 %}dark-grey{% else %}black{% endif %}">
+                    $ {{ result_today }}
+                </span>
+                {% comment %}
+                <span class="blink muted">
+                     x 2
+                </span>
+                {% endcomment %}
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <a class="dark-grey" href="/statistic/">See all</a>
+            </td>
+        </tr>
+
+        {% comment %}
+        <tr>
+            <td class="dark-grey">
+                    Winrate:
+            </td>
+
+            <td>
+                <span {% if winrate > '50' %}class="green"{% else %}class="red"{% endif %}>{{ winrate }} %</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">
+                Avg profit:
+            </td>
+            <td class="dark-grey">
+                <span>{{ avg_profit_perc }} %</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">
+                Avg loss:
+            </td>
+            <td class="dark-grey">
+                {{ avg_loss_perc }} %
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">
+                Avg stop-loss:
+            </td>
+            <td class="dark-grey">
+                {{ avg_stop_loss }} %
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">
+                Profit record:
+            </td>
+            <td class="dark-grey">
+                <a href="{% url 'traider:traid' id=profit_record.id %}">$ {{ profit_record.result }}</a>
+                
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">
+                Loss record:
+            </td>
+            <td class="dark-grey">
+                <a href="{% url 'traider:traid' id=loss_record.id %}">$ {{ loss_record.result }}</a>
+            </td>
+        </tr>
+        {% endcomment %}
+    </tbody>
+</table>
+

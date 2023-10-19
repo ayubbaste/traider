@@ -1,0 +1,63 @@
+<table class="table table-sm white-bg border-black shadow-small">
+    <tbody>
+        <tr class="light-grey-bg mini-font">
+            <td>Coin</td>
+            <td>Date / Time</td>
+            <td>Components</td>
+            <td>Result</td>
+        </tr>
+
+        {% for traid in traids %}
+            <tr>
+                <td>
+                    <a href="{% url 'traider:traid' id=traid.id %}">{{ traid.coin.name }}</a>
+                </td>
+
+                <td>
+                    <p class="dark-grey">
+                        {{ traid.date|date:"d.m.Y" }}
+                        / {{ traid.time }}
+                    </p>
+                </td>
+
+                <td>
+                    {% for reason in traid.entry_reasons.all %}
+                        <span class="grey mini-font">&middot; {{ reason }} </span>
+                    {% endfor %}
+                </td>
+
+                <td>
+                    <span class="{% if traid.result_percent > 0 %}green{% else %}black{% endif %}">
+                        % {{ traid.result_percent }}
+                    </span>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    <ul class="step-links">
+        {% if traids.has_previous %}
+            <!-- <a href="?page=1">&laquo; first</a> -->
+            <li class="page-item prev">
+                <a class="dark-grey" href="?page={{ traids.previous_page_number }}{{ querystring.no__page__as__part }}">&#171; Previous</a>
+            </li>
+        {% endif %}
+
+        <span class="current">
+            <li class="page-item">
+                <span class="pagenav-middle">
+                    Page {{ traids.number }} / {{ traids.paginator.num_pages }}
+                </span>
+            </li>
+        </span>
+
+        {% if traids.has_next %}
+            <li class="page-item forward">
+                <a class="dark-grey" href="?page={{ traids.next_page_number }}{{ querystring.no__page__as__part }}">Forward &#187;</a>
+            <!-- <a href="?page={{ traids.paginator.num_pages }}">last &raquo;</a> -->
+            </li>
+        {% endif %}
+    </ul>
+</div>

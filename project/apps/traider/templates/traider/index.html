@@ -1,0 +1,173 @@
+{% extends 'traider/base.html' %}
+{% load static l10n json_tags %}
+
+{% block title%}Traider{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+
+{% block addition-styles %}
+    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+{% endblock addition-styles %}
+
+{% block content %}
+<section class="content">
+    <div class="container-xl">
+        <div class="tabset">
+            <!-- Tab 1 -->
+            <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
+            <label for="tab1">
+                Dashboard
+            </label>
+
+            <!-- Tab 2 -->
+            <input type="radio" name="tabset" id="tab2" aria-controls="marzen">
+            <label for="tab2">
+                Scanner
+            </label>
+
+            <div class="tab-panels">
+                <section class="tab-panel">
+                    <div class="row">
+                        <div class="col-sm">
+                            {% include "traider/statistic-short.html" %}
+                        </div>
+                    </div>
+
+                    </br>
+                    
+                    <div class="row">
+                        <div class="col-sm">
+                            {% include "traider/traid-results.html" %}
+                        </div>
+                    </div>
+
+
+                    {% include "traider/earnings.html" %}
+
+                </section>
+
+                <section class="tab-panel">
+                    {% include "traider/scanner.html" %}
+                </section>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock content %}
+ 
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/chartjs-plugin-datalabels@0.7.0' %}"></script>
+
+    <script>
+        var earnings_graf = {{ earnings_graf|jsonify }};
+
+        var ctxOptions = {
+            responsive: true,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                    }
+                }]
+            },
+
+            legend: {
+                display: false
+            },
+
+            plugins: {
+                datalabels: {
+                    display: true,
+                    color: '#777',
+                    font: {
+                        size: '12'
+                        // weight: 'bold'
+                    },
+                    formatter: function(value, context) {
+                        return Math.round(value) + '';
+                    }
+                },
+            },
+
+            tooltips: {
+                "enabled": false,
+            },
+
+            "hover": {
+                "animationDuration": 0
+            },
+            "animation": {
+                "duration": 1,
+                "onComplete": function() {
+                    var chartInstance = this.chart,
+                    ctx = chartInstance.ctx;
+                    ctx.font = Chart.helpers.fontString(
+                        Chart.defaults.global.defaultFontSize,
+                        Chart.defaults.global.defaultFontStyle,
+                        Chart.defaults.global.defaultFontFamily
+                    );
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+
+                    //this.data.datasets.forEach(
+                    //    function(dataset, i) {
+                    //        var meta = chartInstance.controller.getDatasetMeta(i);
+                    //        meta.data.forEach(
+                    //            function(bar, index) {
+                    //                var data = dataset.data[index];
+                    //                ctx.fillText(
+                    //                    data,
+                    //                    bar._model.x,
+                    //                    bar._model.y - 10
+                    //                );
+                    //            }
+                    //        );
+                    //    }
+                    //);
+                }
+            },
+            title: {
+                display: false,
+                text: '',
+            },
+        };
+
+        var ctx1 = document.getElementById('grafik1').getContext('2d');
+
+        var earnings_graf = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: earnings_graf.lables,
+                datasets: [
+                    {
+                        // label: 'Balance USDT',
+                        data:
+                            earnings_graf.data,
+                        backgroundColor: 'rgba(66, 152, 219, 0.2)', // [//'rgba(23, 22, 11, 0.5)',],
+                        borderColor: 'rgba(66, 152, 219, 0.7)',
+                        borderWidth: 1,
+                    },
+                ]},
+            options: ctxOptions
+        });
+
+    </script>
+
+    <script type="text/javascript" src="{% static 'js/swiper.min.js' %}"></script>
+
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            spaceBetween: 50,
+            slidesPerView: 1,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+            },
+        });
+    </script>
+{% endblock %}

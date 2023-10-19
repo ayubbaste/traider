@@ -1,0 +1,191 @@
+{% extends 'traider/base.html' %}
+{% load static l10n %}
+
+{% block title%}Statistic{% endblock title %}
+
+{% block addition-styles %}
+    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+{% endblock addition-styles %}
+
+{% block breadcrumbs %}
+    <a href="/">Главная</a>
+    / Statistic
+{% endblock breadcrumbs%}
+
+{% block content %}
+<h1>Statistic</h1>
+
+<table class="table table-sm white-bg">
+    <tbody>
+        <tr>
+            <td class="dark-grey">Traids count:</td>
+            <td class="dark-grey">{{ traids_count }} (+ 154 scalping + 212 manual + 248 with bot) </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">Glogal result:</td>
+            <td>
+                <span class="{% if global_result > 0 %}green{% else %}red{% endif %}">
+                    $ {{ global_result }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">Winrate:</td>
+            <td>
+                <span>{{ winrate }} %</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey"> ~ </td>
+            <td class="dark-grey"> ~ </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">Profit $ rec:</td>
+            <td>
+                <span class="green">
+                    $ {{ profit_record.result }}
+                </span>
+                <span class="dark-grey">
+                    (<a class="dark-grey" href="{% url 'traider:traid' id=profit_record.id %}">{{ profit_record }} / {{ profit_record.date|date:"d.m.Y" }})</a>
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">Profit % rec:</td>
+            <td>
+                <span class="green">
+                    % {{ profit_percent_record.result_percent }}
+                </span>
+                <span class="dark-grey">
+                    (<a class="dark-grey" href="{% url 'traider:traid' id=profit_percent_record.id %}">{{ profit_percent_record  }} / {{ profit_percent_record.date|date:"d.m.Y" }})</a>
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">
+                Avg profit %:
+            </td>
+            <td class="dark-grey">
+                <span>{{ avg_profit_perc }} %</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey"> ~ </td>
+            <td class="dark-grey"> ~ </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">Loss $ rec:</td>
+            <td>
+                {% if loss_record %}
+                    <span class="red">
+                        $ {{ loss_record.result }}
+                    </span>
+                    <span class="dark-grey">
+                        ({{ loss_record }} {{ loss_record.date|date:"d.m.Y" }})
+                    </span>
+                {% else %}
+                    <span class="dark-grey">
+                        No loss
+                    </span>
+                {% endif%}
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">Loss % rec:</td>
+            <td>
+                {% if loss_percent_record %}
+                    <span class="red">
+                        % {{ loss_percent_record.result_percent }}
+                    </span>
+                    <span class="dark-grey">
+                        ({{ loss_percent_record }} {{ loss_percent_record.date|date:"d.m.Y" }})
+                    </span>
+                {% else %}
+                    <span class="dark-grey">
+                        No loss
+                    </span>
+                {% endif%}
+            </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">
+                Avg loss %:
+            </td>
+            <td class="dark-grey">
+                {{ avg_loss_perc }} %
+            </td>
+        </tr>
+
+        {% comment %}
+        <tr>
+            <td class="dark-grey">Avg stop-loss:</td>
+            <td class="dark-grey">{{ avg_stop_loss }} %</td>
+        </tr>
+        {% endcomment %}
+
+        <tr>
+            <td class="dark-grey"> ~ </td>
+            <td class="dark-grey"> ~ </td>
+        </tr>
+
+        <tr>
+            <td class="dark-grey">
+                Glogal commission:
+            </td>
+            <td class="dark-grey">
+                = sum operation.commission * commission_asset_price at moment
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div class="swiper-container image_block">
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+    <div class="swiper-wrapper">
+    {% for screenshot in screenshots.all %}
+        <div class="swiper-slide" data-history="1">
+            <p style="text-align: center;">
+                <td class="dark-grey">{{ screenshot.traid.time }} / {{ screenshot.traid.date|date:"d.m.Y" }}</td>
+                {{ screenshot.traid.coin }}
+                + {{ screenshot.traid.result_percent }}%
+            </p>
+            <img class="image" src="{{ screenshot.attached_file.url }}">
+        </div>
+    {% endfor %}
+    </div>
+
+    <div class="swiper-pagination"></div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'js/swiper.min.js' %}"></script>
+
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+                spaceBetween: 50,
+                slidesPerView: 1,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                },
+        });
+    </script>
+{% endblock scripts %}

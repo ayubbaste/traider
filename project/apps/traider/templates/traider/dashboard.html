@@ -1,0 +1,67 @@
+<div class="row links-block white-bg text-center">
+    <div class="col-sm">
+        <a target="blanck" href="https://coinmarketcap.com/">
+            <img src="/static/images/coinmarketcap-pic.ico">
+            CMCap
+        </a>
+    </div>
+    <div class="col-sm">
+        <a target="blanck" href="https://coinmarketcal.com/en/">
+            <img src="/static/images/coinmarketcal-pic.ico">
+            CMCal
+        </a>
+    </div>
+    <div class="col-sm">
+        <a target="blanck" href="https://messari.io/">
+            <img src="/static/images/messari-pic.png">
+            Messari
+        </a>
+    </div>
+    <div class="col-sm">
+        <a target="blanck" href="https://www.islamicfinanceguru.com/crypto/">
+            <img src="/static/images/messari-pic.png">
+            IFGuru
+        </a>
+    </div>
+    <div class="col-sm">
+        <a target="blanck" href="https://www.deepl.com/ru/translator">
+            <img src="/static/images/deepl-pic.png">
+            Translator
+        </a>
+    </div>
+</div>
+
+{% include "traider/filter.html" with search_url='/' %}
+
+{% if candidates %}
+    <table class="table table-sm">
+        <tbody>
+            <tr class="light-grey-bg">
+                <td class="dark-grey">Symbol</td>
+                <td class="dark-grey">TimeFrame</td>
+                <td class="dark-grey">Status</td>
+            </tr>
+
+            {% for candidate in candidates %}
+                <tr class="white-bg">
+                    <td>
+                        <p class="dark-grey">
+                        <a target="blanc" href="https://www.tradingview.com/chart/?symbol=BINANCE:{{ candidate.symbol }}">
+                                {{ candidate.symbol }}
+                            </a>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="dark-grey">
+                            {{ candidate.get_timeframe_display }}
+                        </p>
+                    </td>
+                    <td>
+                        <p class="dark-grey">
+                            {{ candidate.get_status_display }}
+                        </p>
+                    </td>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

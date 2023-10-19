@@ -1,0 +1,14 @@
+{% extends 'traider/base.html' %}
+{% load static l10n %}
+
+{% block title%}Image id: {{ traid_image.id }}{% endblock title %}
+
+{% block breadcrumbs %}
+    <a href="/">Главная</a>
+    / Image id: {{ traid_image.id }}
+{% endblock breadcrumbs%}
+
+{% block content %}
+    <h1>Image id: {{ traid_image.id }}</h1>
+    <img src="{{ traid_image.image.url }}">
+{% endblock content %}

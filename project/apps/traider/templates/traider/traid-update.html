@@ -1,0 +1,78 @@
+{% extends 'traider/base.html' %}
+{% load static l10n %}
+
+{% block title%}Edit Traid id: {{ traid.id }}{% endblock title %}
+
+{% block breadcrumbs %}
+    <a href="/">Index</a>
+    / <a href="{% url 'traider:traid' id=traid.id %}">Traid id: {{ traid.id }}</a>
+    / Edit
+{% endblock breadcrumbs%}
+
+{% block content %}
+    <h1>Edit Traid id: {{ traid.id }} {{ traid.coin }}</h1>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+	    <div class="form-row light-grey-bg">
+                <div class="fieldWrapper col-sm">
+		              {{ form.note|safe }}
+                </div>
+            </div>
+
+	    <div class="form-row light-grey-bg">
+                <div class="fieldWrapper col-sm">
+                    {{ form.attached_file }}
+                </div>
+            </div>
+        </div>
+
+        {{ formset.management_form }}
+
+        <div class="table-responsive-sm">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td><p>Entry reason</p></td>
+                        <td colspan=3></td>
+                    </tr>
+
+                    <tr class="formset_empty light-grey-bg">
+                        <td>{{ formset.empty_form.reason }}</td>
+                        <td></td>
+                    </tr>
+
+                    {% for form in formset.forms %}
+                    <tr class="formset light-grey-bg">
+                        <td>{{ form.reason }}</td>
+                        <td>{{ form.DELETE }}</td>
+                        {% for hidden in form.hidden_fields %}
+                            <td>{{ hidden }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+        {% csrf_token %}
+        <p><input type="submit" class="btn blue" value="Save"></p>
+    </form>
+{% endblock content %}
+
+{% block scripts %}
+	{{ block.super }}
+	{{ form.media }}
+
+    <script src="{% static 'js/jquery.formset.js' %}"></script>
+
+    <script type="text/javascript">
+        $('.formset').formset({
+            addText: 'Add',
+            deleteText: 'Delete',
+            prefix: 'entry_reasons',
+            formTemplate: '.formset_empty',
+        });
+    </script>
+{% endblock %}

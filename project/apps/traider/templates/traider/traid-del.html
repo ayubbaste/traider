@@ -1,0 +1,29 @@
+{% extends 'traider/base.html' %}
+{% load static l10n %}
+
+{% block title%}Delete traid id: {{ traid.id }}{% endblock title %}
+
+{% block breadcrumbs %}
+    <a href="/">Index</a>
+    / <a href="{% url 'traider:traid' id=traid.id %}">Traid id: {{ traid.id }}</a>
+    / Deleting
+{% endblock breadcrumbs%}
+
+{% block content %}
+
+	<h1>Delete traid id: {{ traid.id }}?</h1>
+
+	<form action="" method="post">
+		<div class="form-row">
+		    {% csrf_token %}
+            <div class="col-sm-1">
+                <a class="btn blue" href="{% url 'traider:traid' id=traid.id %}">No</a>
+            </div>
+
+            <div class="col-sm-3">
+                <input type="submit" class="btn red" value="Delete">
+            </div>
+		</div>
+	</form>
+
+{% endblock content %}
